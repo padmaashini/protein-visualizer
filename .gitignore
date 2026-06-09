@@ -21,3 +21,15 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+### Node / Next.js ###
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+### Environment ###
+.env
+.env*.local
