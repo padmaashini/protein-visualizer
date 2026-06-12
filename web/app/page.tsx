@@ -1,22 +1,5 @@
 import Image from "next/image";
-
-const annotations = [
-  {
-    eyebrow: "Sequence",
-    title: "Follow amino acid chains from source to folded form.",
-    body: "Keep residue notes, domains, and predicted confidence close to the model.",
-  },
-  {
-    eyebrow: "Interaction",
-    title: "Inspect binding pockets and exposed surface regions.",
-    body: "The future viewer can support rotation, zoom, highlighted residues, and saved camera states.",
-  },
-  {
-    eyebrow: "Comparison",
-    title: "Place related proteins side by side.",
-    body: "Review insulin, hemoglobin, enzymes, and custom structures in a consistent workspace.",
-  },
-];
+import ProteinViewer from "@/components/ProteinViewer";
 
 const proteins = [
   {
@@ -78,7 +61,7 @@ export default function Home() {
               Proteins are one of the four major types of biological molecules and a foundational part of your cells. They play a key role in many diseases and disorders and are one of the most researched topics. A protein structure is very complex and determine by numerous factors. By being able to predict the structure of a protein based on its sequencing, we can predict its functions and its role in the organism. See some of the most researched proteins below or browse your own.
             </p>
             <div className="hero-actions" aria-label="Primary actions">
-              <a href="#library" className="button button--primary">
+              <a href="#insulin" className="button button--primary">
                 Browse proteins
               </a>
             </div>
@@ -86,19 +69,21 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="feature-band" id="annotations">
+      <section className="insulin-section" id="insulin">
         <div className="section-heading">
-          <p className="section-kicker">Structure notes</p>
-          <h2>Designed for reading the model while inspecting it.</h2>
+          <p className="section-kicker">Interactive model</p>
+          <h2>Rotate insulin and inspect its compact folded structure.</h2>
         </div>
-        <div className="annotation-grid">
-          {annotations.map((annotation) => (
-            <article className="annotation" key={annotation.eyebrow}>
-              <p>{annotation.eyebrow}</p>
-              <h3>{annotation.title}</h3>
-              <span>{annotation.body}</span>
-            </article>
-          ))}
+        <div className="insulin-layout">
+          <ProteinViewer pdbId="4INS" />
+          <aside className="insulin-blob">
+            <p>INSULIN</p>
+            <h3>A small hormone with a precise fold.</h3>
+            <span>
+              Insulin helps regulate blood glucose. Rotate the model to inspect
+              its folded chains and compact 3D structure.
+            </span>
+          </aside>
         </div>
       </section>
 

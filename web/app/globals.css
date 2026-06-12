@@ -48,7 +48,7 @@ a {
 }
 
 .hero-section,
-.feature-band,
+.insulin-section,
 .library-section,
 .workflow-section {
   padding-right: max(28px, calc((100vw - 1180px) / 2));
@@ -267,14 +267,14 @@ a {
   }
 }
 
-.feature-band,
+.insulin-section,
 .library-section,
 .workflow-section {
   padding-top: 74px;
   padding-bottom: 74px;
 }
 
-.feature-band,
+.insulin-section,
 .workflow-section {
   background: #0a1524;
 }
@@ -297,24 +297,80 @@ a {
   line-height: 1.08;
 }
 
-.annotation-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.annotation,
 .protein-card {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel);
 }
 
-.annotation {
-  padding: 24px;
+.insulin-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.45fr);
+  gap: 28px;
+  align-items: center;
 }
 
-.annotation p,
+.protein-viewer-shell {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+  background: #0a1524;
+}
+
+.protein-viewer-host,
+.protein-viewer-host > .msp-plugin {
+  width: 100%;
+  height: 430px;
+}
+
+.protein-viewer-host .msp-plugin {
+  position: absolute;
+  inset: 0;
+  background: #0a1524;
+}
+
+/* strip Molstar's internal borders */
+.protein-viewer-host .msp-plugin,
+.protein-viewer-host canvas,
+.protein-viewer-host .msp-viewport,
+.protein-viewer-host .msp-plugin .msp-layout-standard {
+  border: none !important;
+  outline: none !important;
+}
+
+/* hide axis indicator + snapshot/animation buttons */
+.protein-viewer-host .msp-viewport-controls-buttons,
+.protein-viewer-host canvas[data-id="axis"],
+.protein-viewer-host .msp-controls-section,
+.protein-viewer-host .msp-layout-top-left,
+.protein-viewer-host .msp-btn-snapshot,
+.protein-viewer-host .msp-viewport-top-left,
+.protein-viewer-host .msp-layout-region-controls,
+.protein-viewer-host .msp-btn-animation,
+.protein-viewer-host .msp-animation-controls {
+  display: none !important;
+}
+
+.protein-viewer-status {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.insulin-blob {
+  border: 1px solid rgba(56, 214, 189, 0.22);
+  border-radius: 42% 58% 48% 52% / 56% 44% 56% 44%;
+  padding: 34px 30px;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(56, 214, 189, 0.16), transparent 34%),
+    rgba(17, 29, 44, 0.92);
+}
+
+.insulin-blob p,
 .protein-card p {
   margin: 0 0 10px;
   color: var(--teal);
@@ -323,7 +379,7 @@ a {
   text-transform: uppercase;
 }
 
-.annotation h3,
+.insulin-blob h3,
 .protein-card h3 {
   margin: 0;
   color: #f2f7fc;
@@ -331,7 +387,7 @@ a {
   line-height: 1.25;
 }
 
-.annotation span,
+.insulin-blob span,
 .protein-card span {
   display: block;
   margin-top: 10px;
