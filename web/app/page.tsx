@@ -70,10 +70,10 @@ export default function Home() {
       </section>
 
       <section className="insulin-section" id="insulin">
-        <div className="section-heading">
+        {/* <div className="section-heading">
           <p className="section-kicker">Interactive model</p>
           <h2>Rotate insulin and inspect its compact folded structure.</h2>
-        </div>
+        </div> */}
         <div className="insulin-layout">
           <ProteinViewer pdbId="4INS" />
           <aside className="insulin-blob">

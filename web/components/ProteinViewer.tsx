@@ -50,7 +50,6 @@ export default function ProteinViewer({ pdbId = "4INS" }: ProteinViewerProps) {
           },
         };
 
-
         spec.canvas3d = {
           ...spec.canvas3d,
           renderer: {
@@ -104,6 +103,28 @@ export default function ProteinViewer({ pdbId = "4INS" }: ProteinViewerProps) {
           trajectory,
           "default",
         );
+
+        // The `snapshot` callback form is the correct way to zoom in on load.
+        //
+        // Molstar invokes this callback *after* the scene is fully rendered and
+        // the bounding sphere is populated — so `scene.boundingSphereVisible`
+        // has real geometry data at that point.
+        //
+        // `camera.getFocus(center, radius)` returns a Camera.Snapshot that
+        // positions the camera so the given sphere fills the viewport.
+        // Multiplying the bounding-sphere radius by a factor < 1 (here 0.5)
+        // makes the camera move closer, effectively zooming in.
+        // Adjust the multiplier to taste: 0.4 = tighter, 0.6 = a bit looser.
+        if (plugin.canvas3d) {
+          plugin.canvas3d.requestCameraReset({
+            durationMs: 0, // instant, no fly-in animation on first load
+            snapshot: (scene, camera) =>
+              camera.getFocus(
+                scene.boundingSphereVisible.center,
+                scene.boundingSphereVisible.radius * 0.5,
+              ),
+          });
+        }
 
         if (!disposed) setStatus("");
       } catch {
