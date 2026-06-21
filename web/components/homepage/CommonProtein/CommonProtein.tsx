@@ -9,6 +9,7 @@ type CommonProteinProps = {
   tagline: string;
   description: string;
   imageAlignment: "left" | "right";
+  variant?: "default" | "offset";
 };
 
 export default function CommonProtein({
@@ -18,11 +19,12 @@ export default function CommonProtein({
   tagline,
   description,
   imageAlignment,
+  variant="default"
 }: CommonProteinProps) {
   const isViewerLeft = imageAlignment === "left";
 
   return (
-    <Section id={id}>
+    <Section id={id} variant={variant}>
       <div
         className={[
           styles.layout,

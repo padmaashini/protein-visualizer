@@ -26,6 +26,7 @@ export default function Home() {
         tagline="A small hormone with a precise fold."
         description="Insulin helps regulate blood glucose. Rotate the model to inspect its folded chains and compact 3D structure."
         imageAlignment="right"
+        variant="offset"
       />
 
       <CommonProtein
@@ -37,29 +38,16 @@ export default function Home() {
         imageAlignment="left"
       />
 
-      <Section
-        id="library"
-        kicker="Protein library"
-        heading="Start with common examples, then connect real data."
-        variant="offset"
-      >
-        <div className={styles.proteinLibrary}>
-         {proteins.map((protein) => (
-            <article className={styles.proteinCard} key={protein.name}>
-              <div className={styles.miniViewer} aria-hidden="true">
-                <span /><span /><span />
-              </div>
-              <div>
-                <p>{protein.label}</p>
-                <h3>{protein.name}</h3>
-                <span>{protein.detail}</span>
-              </div>
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      <Section
+    
+      <CommonProtein
+        id="ferritin"
+        pdbId="1FHA"
+        name="Ferritin"
+        tagline="Nature's iron storage vault."
+        description="A hollow protein cage built from 24 identical subunits. Ferritin stores and releases iron safely inside cells, assembling itself into a near-perfect sphere."
+        imageAlignment="left"
+      />
+      {/* <Section
         id="workflow"
         kicker="Workflow"
         heading="A practical foundation for an interactive protein app."
@@ -72,7 +60,7 @@ export default function Home() {
             </li>
           ))}
         </ol>
-      </Section>
+      </Section> */}
 
       <footer className={styles.siteFooter}>
         <span>Protein Visualizer</span>

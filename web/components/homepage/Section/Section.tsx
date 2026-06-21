@@ -24,7 +24,7 @@ export default function Section({
       id={id}
       className={[
         styles.section,
-        styles[`variant-${variant}`],
+        styles[`variant_${variant}`],
         className,
       ].join(" ")}
       aria-labelledby={heading && id ? `${id}-heading` : undefined}
