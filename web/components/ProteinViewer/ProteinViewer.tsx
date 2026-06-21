@@ -12,7 +12,7 @@ type MolstarViewer = {
 
 export default function ProteinViewer({ pdbId = "4INS" }: ProteinViewerProps) {
   const hostRef = useRef<HTMLDivElement>(null);
-  const [status, setStatus] = useState("Loading insulin structure...");
+  const [status, setStatus] = useState("Loading structure...");
 
   useEffect(() => {
     let viewer: MolstarViewer | undefined;
@@ -53,7 +53,7 @@ export default function ProteinViewer({ pdbId = "4INS" }: ProteinViewerProps) {
         spec.canvas3d = {
           ...spec.canvas3d,
           renderer: {
-            backgroundColor: 0x0a1524 as any,
+            backgroundColor:0x060e1a as any,
           },
           camera: {
             helper: {
