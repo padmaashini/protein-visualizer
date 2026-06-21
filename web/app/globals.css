@@ -572,4 +572,113 @@ a {
     padding-right: 18px;
     padding-left: 18px;
   }
+
+  /* Keep the hero gradient and extend it to all sections */
+.hero-section {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  min-height: 720px;
+  overflow: hidden;
+  padding-top: 128px;
+  padding-bottom: 86px;
+  background:
+    linear-gradient(180deg, rgba(12, 28, 48, 0.96), rgba(8, 17, 30, 1)),
+    #08111e;
+}
+
+/* Insulin and Hemoglobin sections use the same gradient */
+.insulin-section,
+.hemoglobin-section {
+  background:
+    linear-gradient(180deg, rgba(12, 28, 48, 0.96), rgba(8, 17, 30, 1)),
+    #08111e;
+}
+
+/* Remove any conflicting backgrounds from insulin-section (if previously set) */
+.insulin-section {
+  /* no separate background override */
+}
+
+/* Style for the new hemoglobin section */
+.hemoglobin-section {
+  padding: 74px max(28px, calc((100vw - 1180px) / 2));
+}
+
+.hemoglobin-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.45fr) minmax(0, 1.1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.hemoglobin-description {
+  border: 1px solid rgba(239, 114, 92, 0.22);
+  border-radius: 42% 58% 48% 52% / 56% 44% 56% 44%;
+  padding: 34px 30px;
+  background: radial-gradient(circle at 24% 18%, rgba(239, 114, 92, 0.16), transparent 34%),
+              rgba(17, 29, 44, 0.92);
+}
+
+.hemoglobin-description p {
+  margin: 0 0 10px;
+  color: var(--coral);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.hemoglobin-description h3 {
+  margin: 0;
+  color: #f2f7fc;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.hemoglobin-description span {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.hemoglobin-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.hemoglobin-features span {
+  background: rgba(239, 114, 92, 0.15);
+  border-radius: 30px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--coral);
+  margin-top: 0;
+  display: inline-block;
+}
+
+/* Remove library-section, workflow-section styles if you want (optional) */
+/* ... */
+
+/* Responsive */
+@media (max-width: 940px) {
+  .hemoglobin-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .hemoglobin-description {
+    order: 2;
+  }
+}
+
+@media (max-width: 680px) {
+  .hemoglobin-section {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+}
 }

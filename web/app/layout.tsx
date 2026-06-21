@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Protein Visualizer",
-  description: "A simple protein structure learning interface.",
+  description: "Look at some cool proteins in 3D",
 };
 
 export default function RootLayout({

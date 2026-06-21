@@ -1,0 +1,79 @@
+.layout {
+  display: grid;
+  gap: 28px;
+  align-items: center;
+}
+
+/* Viewer left, text right */
+.layoutViewerLeft {
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.45fr);
+}
+
+.layoutViewerLeft .viewer { order: 1; }
+.layoutViewerLeft .blob   { order: 2; }
+
+/* Viewer right, text left */
+.layoutViewerRight {
+  grid-template-columns: minmax(260px, 0.45fr) minmax(0, 1.1fr);
+}
+
+.layoutViewerRight .viewer { order: 2; }
+.layoutViewerRight .blob   { order: 1; }
+
+/* ── Blob ─────────────────────────────────────────── */
+.blob {
+  border: 1px solid rgba(56, 214, 189, 0.22);
+  border-radius: 42% 58% 48% 52% / 56% 44% 56% 44%;
+  padding: 34px 30px;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(56, 214, 189, 0.16), transparent 34%),
+    rgba(17, 29, 44, 0.92);
+  display: flex;
+  flex-direction: column;
+}
+
+.blobLabel {
+  margin: 0 0 10px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.blobHeading {
+  margin: 0;
+  color: #f2f7fc;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.blobBody {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* ── 940px: stack viewer above text ──────────────── */
+@media (max-width: 940px) {
+  .layoutViewerLeft,
+  .layoutViewerRight {
+    grid-template-columns: 1fr;
+  }
+
+  .layoutViewerLeft .viewer,
+  .layoutViewerRight .viewer { order: 1; }
+
+  .layoutViewerLeft .blob,
+  .layoutViewerRight .blob   { order: 2; }
+}
+
+/* ── 680px: flatten organic blob shape ────────────── */
+@media (max-width: 680px) {
+  .blob {
+    border-radius: 12px;
+    padding: 24px 20px;
+  }
+}

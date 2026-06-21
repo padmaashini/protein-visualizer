@@ -1,0 +1,249 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  min-height: 720px;
+  overflow: hidden;
+  padding-top: 128px;
+  padding-bottom: 86px;
+  padding-right: max(28px, calc((100vw - 1180px) / 2));
+  padding-left: max(28px, calc((100vw - 1180px) / 2));
+  background:
+    linear-gradient(180deg, rgba(12, 28, 48, 0.96), rgba(8, 17, 30, 1)),
+    #08111e;
+}
+
+/* ── Wallpaper ─────────────────────────────────────── */
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.render {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.renderTopLeft {
+  top: 18px;
+  left: -150px;
+  width: min(42vw, 500px);
+  opacity: 0.3;
+  filter: saturate(0.85) contrast(1.06) brightness(0.78);
+}
+
+.renderTopRight {
+  top: 26px;
+  right: -118px;
+  width: min(48vw, 620px);
+  opacity: 0.34;
+  filter: saturate(0.9) contrast(1.08) brightness(0.82);
+}
+
+.ghost {
+  position: absolute;
+  display: block;
+  border: 1px solid rgba(237, 244, 251, 0.07);
+  border-radius: 46% 54% 52% 48%;
+  background:
+    radial-gradient(circle at 26% 28%, rgba(142, 124, 255, 0.36), transparent 0 18%, transparent 30%),
+    radial-gradient(circle at 65% 35%, rgba(56, 214, 189, 0.28), transparent 0 16%, transparent 32%),
+    radial-gradient(circle at 48% 68%, rgba(240, 184, 75, 0.22), transparent 0 18%, transparent 35%),
+    rgba(148, 163, 184, 0.08);
+  filter: blur(0.2px);
+  opacity: 0.62;
+}
+
+.ghost::before,
+.ghost::after {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background: rgba(237, 244, 251, 0.1);
+  content: "";
+}
+
+.ghost::before {
+  inset: 24% 16% auto auto;
+  width: 42%;
+  height: 9%;
+  transform: rotate(-24deg);
+}
+
+.ghost::after {
+  inset: auto auto 24% 18%;
+  width: 50%;
+  height: 8%;
+  transform: rotate(18deg);
+}
+
+.ghostThree {
+  right: 26%;
+  bottom: 96px;
+  width: 300px;
+  height: 245px;
+  transform: rotate(-4deg);
+  opacity: 0.38;
+}
+
+/* ── Copy ─────────────────────────────────────────── */
+.copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 28px;
+  width: 100%;
+  justify-items: center;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  color: #f7fbff;
+  font-size: clamp(42px, 5.8vw, 82px);
+  font-weight: 850;
+  letter-spacing: 0;
+  line-height: 0.96;
+  white-space: nowrap;
+}
+
+.intro {
+  max-width: 760px;
+  padding-bottom: 7px;
+}
+
+.summary {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border-radius: 8px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 800;
+  background: #edf4fb;
+  color: #08111e;
+  text-decoration: none;
+}
+
+/* ── 1650px+ ──────────────────────────────────────── */
+@media (min-width: 1650px) {
+  .hero {
+    min-height: 760px;
+    padding-top: 140px;
+  }
+
+  .copy {
+    gap: 32px;
+  }
+
+  .title {
+    font-size: 96px;
+  }
+
+  .intro {
+    max-width: 860px;
+  }
+
+  .summary {
+    font-size: 20px;
+  }
+
+  .actions {
+    margin-top: 34px;
+  }
+
+  .btnPrimary {
+    min-height: 50px;
+    padding: 0 22px;
+    font-size: 15px;
+  }
+
+  .renderTopLeft {
+    left: -175px;
+    width: 560px;
+  }
+
+  .renderTopRight {
+    right: -145px;
+    width: 720px;
+  }
+
+  .ghostThree {
+    width: 350px;
+    height: 285px;
+  }
+}
+
+/* ── 940px and below ──────────────────────────────── */
+@media (max-width: 940px) {
+  .copy {
+    gap: 22px;
+  }
+
+  .title {
+    white-space: normal;
+  }
+}
+
+/* ── 680px and below ──────────────────────────────── */
+@media (max-width: 680px) {
+  .hero {
+    min-height: 620px;
+    padding-top: 82px;
+    padding-bottom: 54px;
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .title {
+    font-size: 42px;
+  }
+
+  .summary {
+    font-size: 16px;
+  }
+
+  .renderTopLeft {
+    top: 52px;
+    left: -136px;
+    width: 300px;
+    opacity: 0.24;
+  }
+
+  .renderTopRight {
+    top: 112px;
+    right: -150px;
+    width: 360px;
+    opacity: 0.24;
+  }
+
+  .ghostThree {
+    right: 8%;
+    bottom: 220px;
+    width: 220px;
+    height: 180px;
+  }
+}
