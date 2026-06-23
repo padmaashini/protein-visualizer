@@ -2,7 +2,7 @@ import ProteinViewer from "@/components/ProteinViewer/ProteinViewer";
 import Section from "@/components/homepage/Section/Section";
 import styles from "./CommonProtein.module.css";
 
-type CommonProteinProps = {
+export type CommonProteinProps = {
   id: string;
   pdbId: string;
   name: string;
@@ -10,6 +10,7 @@ type CommonProteinProps = {
   description: string;
   imageAlignment: "left" | "right";
   variant?: "default" | "offset";
+  zoom?: number;
 };
 
 export default function CommonProtein({
@@ -19,21 +20,26 @@ export default function CommonProtein({
   tagline,
   description,
   imageAlignment,
-  variant="default"
+  variant = "default",
+  zoom,
 }: CommonProteinProps) {
   const isViewerLeft = imageAlignment === "left";
+  const sectionBackgroundColor = variant === "offset" ? "#0d1a2a" : "#0a1524";
 
   return (
-    <Section id={id} variant={variant}>
+    <Section id={id} variant={variant} className={styles.proteinSection}>
       <div
         className={[
           styles.layout,
           isViewerLeft ? styles.layoutViewerLeft : styles.layoutViewerRight,
         ].join(" ")}
       >
-        {/* Viewer renders first in DOM always; CSS order controls visual position */}
         <div className={styles.viewer}>
-          <ProteinViewer pdbId={pdbId} />
+          <ProteinViewer
+            pdbId={pdbId}
+            backgroundColor={sectionBackgroundColor}
+            zoom={zoom}
+          />
         </div>
 
         <aside className={styles.blob}>

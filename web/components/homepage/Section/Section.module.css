@@ -1,19 +1,21 @@
 .section {
-  padding-top: 74px;
-  padding-bottom: 74px;
-  padding-right: max(28px, calc((100vw - 1180px) / 2));
-  padding-left: max(28px, calc((100vw - 1180px) / 2));
+  --content-width: 1180px;
+
+  padding-block: 74px;
+  padding-inline: max(28px, calc((100vw - var(--content-width)) / 2));
 }
 
-/* Background variants */
 .variant_default {
-  background: #0a1524;
+  --section-background: #0a1524;
 }
 
 .variant_offset {
-  background: #0d1a2a;
-  border-top: 1px solid rgba(148, 163, 184, 0.14);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  --section-background: #0d1a2a;
+}
+
+.variant_default,
+.variant_offset {
+  background: var(--section-background);
 }
 
 .sectionHeading {
@@ -39,9 +41,7 @@
 /* ── Mobile ───────────────────────────────────────── */
 @media (max-width: 680px) {
   .section {
-    padding-right: 18px;
-    padding-left: 18px;
-    padding-top: 52px;
-    padding-bottom: 52px;
+    padding-block: 52px;
+    padding-inline: 18px;
   }
 }

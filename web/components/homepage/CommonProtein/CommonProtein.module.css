@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+.proteinSection {
+  --content-width: 980px;
+}
+
 /* Viewer left, text right */
 .layoutViewerLeft {
   grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.45fr);
