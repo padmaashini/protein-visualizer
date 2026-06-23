@@ -1,5 +1,5 @@
 import ProteinViewer from "@/components/ProteinViewer/ProteinViewer";
-import Section from "@/components/homepage/Section/Section";
+import Section from "@/components/Section/Section";
 import styles from "./CommonProtein.module.css";
 
 export type CommonProteinProps = {

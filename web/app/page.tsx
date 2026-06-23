@@ -1,7 +1,7 @@
-import Hero from "@/components/homepage/Hero/Hero";
+import Hero from "@/components/Hero/Hero";
 import CommonProtein, {
   type CommonProteinProps,
-} from "@/components/homepage/CommonProtein/CommonProtein";
+} from "@/components/CommonProtein/CommonProtein";
 import styles from "./page.module.css";
 
 const proteins: CommonProteinProps[] = [
