@@ -19,7 +19,7 @@ type MolstarViewer = {
 export default function ProteinViewer({
   pdbId = "4INS",
   backgroundColor = "#0a1524",
-  zoom = 0.5,
+  zoom = 0.9,
 }: ProteinViewerProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState("Loading structure...");
@@ -40,12 +40,16 @@ export default function ProteinViewer({
           { DefaultPluginUISpec },
           { PluginConfig },
           { Color },
+          { StructureSelectionQueries },
+          { StructureQuery, StructureSelection },
         ] = await Promise.all([
           import("molstar/lib/mol-plugin-ui"),
           import("molstar/lib/mol-plugin-ui/react18"),
           import("molstar/lib/mol-plugin-ui/spec"),
           import("molstar/lib/mol-plugin/config"),
           import("molstar/lib/mol-util/color"),
+          import("molstar/lib/mol-plugin-state/helpers/structure-selection-query"),
+          import("molstar/lib/mol-model/structure/query"),
         ]);
 
         const spec = DefaultPluginUISpec();
@@ -118,14 +122,32 @@ export default function ProteinViewer({
           "default",
         );
 
+        // Frame the camera on the polymer fold only. Using the full visible
+        // bounding sphere lets scattered solvent/heteroatoms inflate the radius
+        // inconsistently between structures, so a shared zoom never aligns them.
+        const structure =
+          plugin.managers.structure.hierarchy.current.structures[0]?.cell.obj
+            ?.data;
+
+        const polymer = structure
+          ? StructureSelection.unionStructure(
+              StructureQuery.run(
+                StructureSelectionQueries.polymer.query,
+                structure,
+              ),
+            )
+          : undefined;
+
         if (plugin.canvas3d) {
           plugin.canvas3d.requestCameraReset({
             durationMs: 0,
-            snapshot: (scene, camera) =>
-              camera.getFocus(
-                scene.boundingSphereVisible.center,
-                scene.boundingSphereVisible.radius * zoom,
-              ),
+            snapshot: (scene, camera) => {
+              const sphere =
+                polymer && polymer.elementCount > 0
+                  ? polymer.boundary.sphere
+                  : scene.boundingSphereVisible;
+              return camera.getFocus(sphere.center, sphere.radius * zoom);
+            },
           });
         }
 

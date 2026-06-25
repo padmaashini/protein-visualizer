@@ -1,6 +1,6 @@
 .layout {
   display: grid;
-  gap: 28px;
+  gap: 40px;
   align-items: center;
 }
 
@@ -10,22 +10,23 @@
 
 /* Viewer left, text right */
 .layoutViewerLeft {
-  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.45fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
 .layoutViewerLeft .viewer { order: 1; }
-.layoutViewerLeft .blob   { order: 2; }
+.layoutViewerLeft .blob   { order: 2; justify-self: center; }
 
 /* Viewer right, text left */
 .layoutViewerRight {
-  grid-template-columns: minmax(260px, 0.45fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
 .layoutViewerRight .viewer { order: 2; }
-.layoutViewerRight .blob   { order: 1; }
+.layoutViewerRight .blob   { order: 1; justify-self: center; }
 
 /* ── Blob ─────────────────────────────────────────── */
 .blob {
+  max-width: 320px;
   border: 1px solid rgba(56, 214, 189, 0.22);
   border-radius: 42% 58% 48% 52% / 56% 44% 56% 44%;
   padding: 34px 30px;

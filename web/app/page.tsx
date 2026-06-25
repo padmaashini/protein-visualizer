@@ -23,7 +23,6 @@ const proteins: CommonProteinProps[] = [
     description:
       "Hemoglobin transports oxygen from the lungs to tissues. Its four subunits cooperate through conformational changes.",
     imageAlignment: "left",
-    zoom: 0.8,
   },
   {
     id: "ferritin",
@@ -34,7 +33,6 @@ const proteins: CommonProteinProps[] = [
       "A hollow protein cage built from 24 identical subunits. Ferritin stores and releases iron safely inside cells, assembling itself into a near-perfect sphere.",
     imageAlignment: "right",
     variant: "offset",
-    zoom: 0.8,
   },
 ];
 
