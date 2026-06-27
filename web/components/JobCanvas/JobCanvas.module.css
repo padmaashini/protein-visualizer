@@ -1,0 +1,169 @@
+.canvas {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 28px 32px;
+  gap: 22px;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.headerMain {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.jobName {
+  margin: 0;
+  color: var(--foreground);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 800;
+}
+
+.model {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 360px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(56, 214, 189, 0.08), transparent 40%),
+    radial-gradient(circle at 75% 70%, rgba(91, 140, 255, 0.08), transparent 45%),
+    var(--panel);
+}
+
+.state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.stateTitle {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stateBody {
+  margin: 0;
+  max-width: 420px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid rgba(56, 214, 189, 0.25);
+  border-top-color: var(--teal);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sequence {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: var(--panel-soft);
+}
+
+.sequenceLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sequenceCount {
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.sequenceText {
+  display: block;
+  max-height: 120px;
+  overflow-y: auto;
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+
+/* ── Empty state ──────────────────────────────────── */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 22px;
+  padding: 32px;
+}
+
+.emptyOrb {
+  width: 120px;
+  height: 120px;
+  border-radius: 46% 54% 52% 48% / 56% 44% 56% 44%;
+  background:
+    radial-gradient(circle at 30% 28%, rgba(142, 124, 255, 0.4), transparent 45%),
+    radial-gradient(circle at 68% 64%, rgba(56, 214, 189, 0.32), transparent 48%),
+    rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(237, 244, 251, 0.08);
+  opacity: 0.8;
+}
+
+.emptyText {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+@media (max-width: 680px) {
+  .canvas {
+    padding: 20px 18px;
+  }
+}

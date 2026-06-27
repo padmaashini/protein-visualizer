@@ -1,0 +1,150 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(4, 9, 18, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.title {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.close {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: var(--foreground);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 11px 13px;
+  background: var(--panel-soft);
+  color: var(--foreground);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px rgba(56, 214, 189, 0.18);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 110px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+  line-height: 1.6;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.error {
+  margin: 0;
+  border: 1px solid rgba(239, 114, 92, 0.4);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(239, 114, 92, 0.12);
+  color: var(--coral);
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.secondary,
+.primary {
+  min-height: 42px;
+  border-radius: 8px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--foreground);
+}
+
+.secondary:hover:not(:disabled) {
+  border-color: var(--muted);
+}
+
+.primary {
+  border: none;
+  color: #08111e;
+  background: linear-gradient(135deg, var(--teal), var(--blue));
+}
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.secondary:disabled,
+.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -7,6 +7,9 @@ type HexColor = `#${string}`;
 
 type ProteinViewerProps = {
   pdbId?: string;
+  /** Raw structure text (e.g. PDB from a folding model). Takes priority over pdbId. */
+  structureData?: string;
+  structureFormat?: "pdb" | "mmcif";
   backgroundColor?: HexColor;
   /** Multiplier for the structure's fitted radius; smaller values zoom in. */
   zoom?: number;
@@ -18,6 +21,8 @@ type MolstarViewer = {
 
 export default function ProteinViewer({
   pdbId = "4INS",
+  structureData,
+  structureFormat = "pdb",
   backgroundColor = "#0a1524",
   zoom = 0.9,
 }: ProteinViewerProps) {
@@ -103,18 +108,23 @@ export default function ProteinViewer({
           return;
         }
 
-        const data = await plugin.builders.data.download(
-          {
-            url: `https://files.rcsb.org/download/${pdbId.toUpperCase()}.cif`,
-            isBinary: false,
-            label: `Structure ${pdbId.toUpperCase()}`,
-          },
-          { state: { isGhost: true } },
-        );
+        const data = structureData
+          ? await plugin.builders.data.rawData(
+              { data: structureData, label: "Folded structure" },
+              { state: { isGhost: true } },
+            )
+          : await plugin.builders.data.download(
+              {
+                url: `https://files.rcsb.org/download/${pdbId.toUpperCase()}.cif`,
+                isBinary: false,
+                label: `Structure ${pdbId.toUpperCase()}`,
+              },
+              { state: { isGhost: true } },
+            );
 
         const trajectory = await plugin.builders.structure.parseTrajectory(
           data,
-          "mmcif",
+          structureData ? structureFormat : "mmcif",
         );
 
         await plugin.builders.structure.hierarchy.applyPreset(
@@ -163,7 +173,7 @@ export default function ProteinViewer({
       disposed = true;
       viewer?.dispose();
     };
-  }, [backgroundColor, pdbId, zoom]);
+  }, [backgroundColor, pdbId, structureData, structureFormat, zoom]);
 
   return (
     <div

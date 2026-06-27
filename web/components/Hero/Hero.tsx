@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./Hero.module.css";
 
 export default function Hero() {
@@ -39,9 +40,12 @@ export default function Hero() {
             your own.
           </p>
           <div className={styles.actions} aria-label="Primary actions">
-            <a href="#insulin" className={styles.btnPrimary}>
+            <Link href="#insulin" className={styles.btnPrimary}>
               Browse proteins
-            </a>
+            </Link>
+            <Link href="/visualize-proteins" className={styles.btnSecondary}>
+              Submit Sequence
+            </Link>
           </div>
         </div>
       </div>
