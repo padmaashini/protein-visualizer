@@ -1,0 +1,63 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--line);
+  background: #060d17;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--foreground);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.brandMark {
+  width: 18px;
+  height: 18px;
+  border-radius: 50% 50% 48% 52% / 52% 48% 52% 48%;
+  background: linear-gradient(135deg, var(--teal), var(--blue));
+}
+
+.homeLink {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.homeLink:hover {
+  color: var(--foreground);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.canvas {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 760px) {
+  .body {
+    flex-direction: column;
+  }
+}
