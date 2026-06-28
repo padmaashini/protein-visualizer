@@ -33,6 +33,12 @@
   background: linear-gradient(135deg, var(--teal), var(--blue));
 }
 
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
 .homeLink {
   color: var(--muted);
   font-size: 14px;
@@ -41,6 +47,81 @@
 
 .homeLink:hover {
   color: var(--foreground);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.profileName {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.signOut {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signOut:hover {
+  border-color: var(--muted);
+  color: var(--foreground);
+}
+
+.signInPanel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.signInOrb {
+  width: 110px;
+  height: 110px;
+  border-radius: 46% 54% 52% 48% / 56% 44% 56% 44%;
+  border: 1px solid rgba(237, 244, 251, 0.08);
+  background:
+    radial-gradient(circle at 30% 28%, rgba(142, 124, 255, 0.4), transparent 45%),
+    radial-gradient(circle at 68% 64%, rgba(56, 214, 189, 0.32), transparent 48%),
+    rgba(148, 163, 184, 0.08);
+  opacity: 0.85;
+}
+
+.signInTitle {
+  margin: 0;
+  color: var(--foreground);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+}
+
+.signInText {
+  margin: 0;
+  max-width: 440px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .body {

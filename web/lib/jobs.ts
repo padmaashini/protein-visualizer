@@ -1,3 +1,5 @@
+import { authHeaders } from "@/lib/auth";
+
 export type JobStatus = "pending" | "running" | "completed" | "failed";
 
 export type VisualizationJob = {
@@ -30,6 +32,7 @@ async function parseError(response: Response): Promise<string> {
 
 export async function listJobs(): Promise<VisualizationJob[]> {
   const response = await fetch("/api/visualization_jobs", {
+    headers: authHeaders(),
     cache: "no-store",
   });
   if (!response.ok) throw new Error(await parseError(response));
@@ -41,7 +44,7 @@ export async function createJob(
 ): Promise<VisualizationJob> {
   const response = await fetch("/api/visualization_job", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(input),
   });
   if (!response.ok) throw new Error(await parseError(response));

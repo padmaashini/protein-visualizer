@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, g, jsonify, request
 
+from .auth import login_required
 from .db import VisualizationJob, db
 
 SUPPORTED_MODELS = {"esmfold"}
@@ -9,24 +10,27 @@ bp = Blueprint("jobs", __name__)
 
 
 @bp.get("/visualization_jobs")
+@login_required
 def list_jobs():
     jobs = db.session.scalars(
-        db.select(VisualizationJob).order_by(
-            VisualizationJob.created_at.desc(), VisualizationJob.id.desc()
-        )
+        db.select(VisualizationJob)
+        .where(VisualizationJob.owner_id == g.user.id)
+        .order_by(VisualizationJob.created_at.desc(), VisualizationJob.id.desc())
     ).all()
     return jsonify([job.to_dict() for job in jobs])
 
 
 @bp.get("/visualization_job/<int:job_id>")
+@login_required
 def get_job(job_id: int):
     job = db.session.get(VisualizationJob, job_id)
-    if job is None:
+    if job is None or job.owner_id != g.user.id:
         return jsonify({"error": "Job not found"}), 404
     return jsonify(job.to_dict())
 
 
 @bp.post("/visualization_job")
+@login_required
 def create_job():
     payload = request.get_json(silent=True) or {}
     error = validate_job_payload(payload)
@@ -34,6 +38,7 @@ def create_job():
         return jsonify({"error": error}), 400
 
     job = VisualizationJob(
+        owner_id=g.user.id,
         name=payload["name"].strip(),
         model=payload["model"].strip().lower(),
         sequence=payload["sequence"].strip().upper(),
