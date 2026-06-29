@@ -2,13 +2,14 @@ import os
 
 from flask import Flask
 
-from .db import db
+from app.db import db
 
 
 def create_app(test_config: dict | None = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY=os.environ.get("SECRET_KEY", "dev"),
+        NVIDIA_TOKEN=os.environ.get("NVIDIA_TOKEN"),
         SQLALCHEMY_DATABASE_URI=(
             f"sqlite:///{os.path.join(app.instance_path, 'jobs.db')}"
         ),
@@ -26,7 +27,7 @@ def create_app(test_config: dict | None = None) -> Flask:
     with app.app_context():
         db.create_all()
 
-    from . import auth, jobs
+    from app import auth, jobs
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(jobs.bp)

@@ -41,8 +41,11 @@ class VisualizationJob(db.Model):
     __tablename__ = "visualization_jobs"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    owner_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False, index=True
+    owner_id: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id"), nullable=True, index=True
+    )
+    session_id: Mapped[str | None] = mapped_column(
+        nullable=True, index=True, default=None
     )
     name: Mapped[str] = mapped_column(nullable=False)
     model: Mapped[str] = mapped_column(nullable=False)

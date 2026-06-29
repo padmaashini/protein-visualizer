@@ -23,7 +23,7 @@ export default function VisualizeWorkspace() {
   const isAuthenticated = authStatus === "authenticated";
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (authStatus === "loading") return;
     let active = true;
     (async () => {
       try {
@@ -39,7 +39,7 @@ export default function VisualizeWorkspace() {
     return () => {
       active = false;
     };
-  }, [isAuthenticated, user?.id]);
+  }, [authStatus, user?.id]);
 
   function handleSignOut() {
     setJobs([]);
@@ -53,10 +53,20 @@ export default function VisualizeWorkspace() {
     [jobs, selectedJobId],
   );
 
+  async function refreshJobs() {
+    try {
+      const data = await listJobs();
+      setJobs(data);
+      setStatus("ready");
+    } catch {
+      setStatus("error");
+    }
+  }
+
   function handleCreated(job: VisualizationJob) {
-    setJobs((current) => [job, ...current]);
     setSelectedJobId(job.id);
     setIsModalOpen(false);
+    refreshJobs();
   }
 
   return (
@@ -97,34 +107,18 @@ export default function VisualizeWorkspace() {
         </div>
       </header>
 
-      {isAuthenticated ? (
-        <div className={styles.body}>
-          <JobsSidebar
-            jobs={jobs}
-            status={status}
-            selectedJobId={selectedJobId}
-            onSelect={setSelectedJobId}
-            onCreate={() => setIsModalOpen(true)}
-          />
-          <main className={styles.canvas}>
-            <JobCanvas job={selectedJob} />
-          </main>
-        </div>
-      ) : (
-        <div className={styles.signInPanel}>
-          <div className={styles.signInOrb} aria-hidden="true" />
-          <h1 className={styles.signInTitle}>Sign in to fold proteins</h1>
-          <p className={styles.signInText}>
-            Create folding jobs and visualize predicted structures. Your jobs are
-            private to your account.
-          </p>
-          {authStatus === "unauthenticated" ? (
-            <SignInButton />
-          ) : (
-            <p className={styles.signInText}>Checking your session...</p>
-          )}
-        </div>
-      )}
+      <div className={styles.body}>
+        <JobsSidebar
+          jobs={jobs}
+          status={status}
+          selectedJobId={selectedJobId}
+          onSelect={setSelectedJobId}
+          onCreate={() => setIsModalOpen(true)}
+        />
+        <main className={styles.canvas}>
+          <JobCanvas job={selectedJob} />
+        </main>
+      </div>
 
       {isModalOpen ? (
         <CreateJobModal

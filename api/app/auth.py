@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, g, jsonify, request
 from google.auth.transport import requests as google_requests
 from google.oauth2 import id_token
 
-from .db import User, db
+from app.db import User, db
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -23,7 +23,7 @@ def _issue_session_token(user: User) -> str:
     return jwt.encode(payload, current_app.config["SECRET_KEY"], algorithm="HS256")
 
 
-def _current_user() -> User | None:
+def current_user_optional() -> User | None:
     header = request.headers.get("Authorization", "")
     if not header.startswith("Bearer "):
         return None
@@ -40,7 +40,7 @@ def _current_user() -> User | None:
 def login_required(view):
     @wraps(view)
     def wrapped(*args, **kwargs):
-        user = _current_user()
+        user = current_user_optional()
         if user is None:
             return jsonify({"error": "Authentication required"}), 401
         g.user = user

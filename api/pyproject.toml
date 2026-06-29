@@ -10,4 +10,5 @@ dependencies = [
     "google-auth>=2.0",
     "pyjwt>=2.8",
     "requests>=2.34.2",
+    "temporalio>=1.29.0",
 ]
