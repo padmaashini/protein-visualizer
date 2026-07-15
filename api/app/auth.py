@@ -20,7 +20,7 @@ def _issue_session_token(user: User) -> str:
         "iat": now,
         "exp": now + SESSION_TTL,
     }
-    return jwt.encode(payload, current_app.config["SECRET_KEY"], algorithm="HS256")
+    return jwt.encode(payload, current_app.config["JWT_SECRET"], algorithm="HS256")
 
 
 def current_user_optional() -> User | None:
@@ -30,7 +30,7 @@ def current_user_optional() -> User | None:
     token = header[len("Bearer ") :]
     try:
         payload = jwt.decode(
-            token, current_app.config["SECRET_KEY"], algorithms=["HS256"]
+            token, current_app.config["JWT_SECRET"], algorithms=["HS256"]
         )
     except jwt.PyJWTError:
         return None

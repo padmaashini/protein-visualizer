@@ -50,3 +50,11 @@ export async function createJob(
   if (!response.ok) throw new Error(await parseError(response));
   return response.json();
 }
+
+export async function deleteJob(id: number): Promise<void> {
+  const response = await fetch(`/api/visualization_job/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+  if (!response.ok) throw new Error(await parseError(response));
+}

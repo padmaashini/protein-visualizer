@@ -8,12 +8,14 @@ from app.db import db
 def create_app(test_config: dict | None = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY=os.environ.get("SECRET_KEY", "dev"),
+        SECRET_KEY=os.environ.get("JWT_SECRET", "dev"),
+        JWT_SECRET=os.environ.get("JWT_SECRET", "dev"),
         NVIDIA_TOKEN=os.environ.get("NVIDIA_TOKEN"),
         SQLALCHEMY_DATABASE_URI=(
             f"sqlite:///{os.path.join(app.instance_path, 'jobs.db')}"
         ),
         GOOGLE_CLIENT_ID=os.environ.get("GOOGLE_CLIENT_ID"),
+        GOOGLE_CLIENT_SECRET=os.environ.get("GOOGLE_CLIENT_SECRET"),
     )
 
     if test_config is None:

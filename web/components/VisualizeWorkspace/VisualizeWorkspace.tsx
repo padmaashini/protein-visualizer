@@ -8,7 +8,7 @@ import JobCanvas from "@/components/JobCanvas/JobCanvas";
 import CreateJobModal from "@/components/CreateJobModal/CreateJobModal";
 import SignInButton from "@/components/SignInButton/SignInButton";
 import { useAuth } from "@/components/AuthProvider/AuthProvider";
-import { listJobs, type VisualizationJob } from "@/lib/jobs";
+import { listJobs, deleteJob, type VisualizationJob } from "@/lib/jobs";
 import styles from "./VisualizeWorkspace.module.css";
 
 export default function VisualizeWorkspace() {
@@ -69,6 +69,16 @@ export default function VisualizeWorkspace() {
     refreshJobs();
   }
 
+  async function handleDelete(job: VisualizationJob) {
+    try {
+      await deleteJob(job.id);
+      if (selectedJobId === job.id) setSelectedJobId(null);
+      await refreshJobs();
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
     <div className={styles.shell}>
       <header className={styles.topBar}>
@@ -116,7 +126,7 @@ export default function VisualizeWorkspace() {
           onCreate={() => setIsModalOpen(true)}
         />
         <main className={styles.canvas}>
-          <JobCanvas job={selectedJob} />
+          <JobCanvas job={selectedJob} onDelete={handleDelete} />
         </main>
       </div>
 

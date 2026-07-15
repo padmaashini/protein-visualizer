@@ -3,7 +3,12 @@ import StatusBadge from "@/components/StatusBadge/StatusBadge";
 import { type VisualizationJob } from "@/lib/jobs";
 import styles from "./JobCanvas.module.css";
 
-export default function JobCanvas({ job }: { job: VisualizationJob | null }) {
+type JobCanvasProps = {
+  job: VisualizationJob | null;
+  onDelete: (job: VisualizationJob) => void;
+};
+
+export default function JobCanvas({ job, onDelete }: JobCanvasProps) {
   if (!job) {
     return (
       <div className={styles.empty}>
@@ -13,12 +18,30 @@ export default function JobCanvas({ job }: { job: VisualizationJob | null }) {
     );
   }
 
+  function handleDelete() {
+    if (typeof window !== "undefined" && !window.confirm(`Delete "${job!.name}"? This cannot be undone.`)) {
+      return;
+    }
+    onDelete(job!);
+  }
+
   return (
     <div className={styles.canvas}>
       <header className={styles.header}>
         <div className={styles.headerMain}>
           <h1 className={styles.jobName}>{job.name}</h1>
           <StatusBadge status={job.status} />
+          <button
+            type="button"
+            className={styles.deleteButton}
+            onClick={handleDelete}
+            aria-label={`Delete ${job.name}`}
+          >
+            <span aria-hidden="true" className={styles.deleteIcon}>
+              ×
+            </span>
+            Delete
+          </button>
         </div>
         <p className={styles.model}>Model: {job.model.toUpperCase()}</p>
       </header>

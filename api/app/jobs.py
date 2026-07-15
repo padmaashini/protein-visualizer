@@ -99,6 +99,17 @@ def create_job():
     return jsonify(job.to_dict()), 201
 
 
+@bp.delete("/visualization_job/<int:job_id>")
+def delete_job(job_id: int):
+    user, session_id = _identity()
+    job = db.session.get(VisualizationJob, job_id)
+    if job is None or not _owns(job, user, session_id):
+        return jsonify({"error": "Job not found"}), 404
+    db.session.delete(job)
+    db.session.commit()
+    return "", 204
+
+
 def _owns(job: VisualizationJob, user: User | None, session_id: str | None) -> bool:
     if user is not None:
         return job.owner_id == user.id
