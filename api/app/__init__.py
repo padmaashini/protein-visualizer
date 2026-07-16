@@ -11,8 +11,9 @@ def create_app(test_config: dict | None = None) -> Flask:
         SECRET_KEY=os.environ.get("JWT_SECRET", "dev"),
         JWT_SECRET=os.environ.get("JWT_SECRET", "dev"),
         NVIDIA_TOKEN=os.environ.get("NVIDIA_TOKEN"),
-        SQLALCHEMY_DATABASE_URI=(
-            f"sqlite:///{os.path.join(app.instance_path, 'jobs.db')}"
+        SQLALCHEMY_DATABASE_URI=os.environ.get(
+            "SQLALCHEMY_DATABASE_URI",
+            f"sqlite:///{os.path.join(app.instance_path, 'jobs.db')}",
         ),
         GOOGLE_CLIENT_ID=os.environ.get("GOOGLE_CLIENT_ID"),
         GOOGLE_CLIENT_SECRET=os.environ.get("GOOGLE_CLIENT_SECRET"),
@@ -29,9 +30,12 @@ def create_app(test_config: dict | None = None) -> Flask:
     with app.app_context():
         db.create_all()
 
-    from app import auth, jobs
+    from app import auth, jobs, sse
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(jobs.bp)
+    app.register_blueprint(sse.bp)
+
+    sse._start_poller(app)
 
     return app

@@ -30,12 +30,24 @@ export default function ProteinViewer({
   const [status, setStatus] = useState("Loading structure...");
 
   useEffect(() => {
-    let viewer: MolstarViewer | undefined;
+    const host = hostRef.current;
+    if (!host) return;
+
+    // Render into a fresh child node on every mount. createPluginUI calls
+    // ReactDOM.createRoot() on its target, and React marks that DOM node.
+    // StrictMode/HMR reuse the same hostRef element across remounts, so
+    // reusing it would call createRoot() on an already-marked node (the
+    // error we kept hitting). A brand-new child per mount sidesteps that
+    // entirely; cleanup removes it.
+    const container = document.createElement("div");
+    container.style.width = "100%";
+    container.style.height = "100%";
+    host.appendChild(container);
+
     let disposed = false;
+    let viewer: MolstarViewer | undefined;
 
     async function mountViewer() {
-      if (!hostRef.current) return;
-
       setStatus("Loading structure...");
 
       try {
@@ -56,6 +68,10 @@ export default function ProteinViewer({
           import("molstar/lib/mol-plugin-state/helpers/structure-selection-query"),
           import("molstar/lib/mol-model/structure/query"),
         ]);
+
+        if (disposed) {
+          return;
+        }
 
         const spec = DefaultPluginUISpec();
 
@@ -97,16 +113,16 @@ export default function ProteinViewer({
         ];
 
         const plugin = await createPluginUI({
-          target: hostRef.current,
+          target: container,
           render: renderReact18,
           spec,
         });
-        viewer = plugin;
 
         if (disposed) {
           plugin.dispose();
           return;
         }
+        viewer = plugin;
 
         const data = structureData
           ? await plugin.builders.data.rawData(
@@ -121,6 +137,11 @@ export default function ProteinViewer({
               },
               { state: { isGhost: true } },
             );
+
+        if (disposed) {
+          plugin.dispose();
+          return;
+        }
 
         const trajectory = await plugin.builders.structure.parseTrajectory(
           data,
@@ -172,6 +193,10 @@ export default function ProteinViewer({
     return () => {
       disposed = true;
       viewer?.dispose();
+      viewer = undefined;
+      if (container.parentNode) {
+        container.parentNode.removeChild(container);
+      }
     };
   }, [backgroundColor, pdbId, structureData, structureFormat, zoom]);
 

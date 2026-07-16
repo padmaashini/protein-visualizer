@@ -33,14 +33,29 @@ def _scope_filter(user: User | None, session_id: str | None) -> ColumnElement | 
     return None
 
 
+async def _temporal_client() -> Client:
+    return await Client.connect(TEMPORAL_ADDRESS)
+
+
 async def _start_fold_workflow(job_id: int) -> None:
-    client = await Client.connect(TEMPORAL_ADDRESS)
+    client = await _temporal_client()
     await client.start_workflow(
         ProteinWorkflow.run,
         job_id,
         id=f"protein-fold-{job_id}",
         task_queue=TASK_QUEUE,
     )
+
+
+async def _cancel_fold_workflow(job_id: int) -> None:
+    """Best-effort cancel of the in-flight folding workflow for a job.
+
+    A missing workflow is fine (it already finished), so any lookup/connection
+    error is logged and swallowed -- the row delete is the source of truth.
+    """
+    client = await _temporal_client()
+    handle = client.get_workflow_handle(f"protein-fold-{job_id}")
+    await handle.cancel()
 
 
 @bp.get("/visualization_jobs")
@@ -105,6 +120,15 @@ def delete_job(job_id: int):
     job = db.session.get(VisualizationJob, job_id)
     if job is None or not _owns(job, user, session_id):
         return jsonify({"error": "Job not found"}), 404
+
+    if job.status in {"pending", "running"}:
+        try:
+            asyncio.run(_cancel_fold_workflow(job.id))
+        except Exception:
+            current_app.logger.exception(
+                "Failed to cancel folding workflow for job %s", job.id
+            )
+
     db.session.delete(job)
     db.session.commit()
     return "", 204

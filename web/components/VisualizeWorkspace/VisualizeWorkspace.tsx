@@ -8,6 +8,7 @@ import JobCanvas from "@/components/JobCanvas/JobCanvas";
 import CreateJobModal from "@/components/CreateJobModal/CreateJobModal";
 import SignInButton from "@/components/SignInButton/SignInButton";
 import { useAuth } from "@/components/AuthProvider/AuthProvider";
+import { getAnonId, getToken } from "@/lib/auth";
 import { listJobs, deleteJob, type VisualizationJob } from "@/lib/jobs";
 import styles from "./VisualizeWorkspace.module.css";
 
@@ -38,6 +39,32 @@ export default function VisualizeWorkspace() {
     })();
     return () => {
       active = false;
+    };
+  }, [authStatus, user?.id]);
+
+  // Stream job updates pushed from the SSE poller so the sidebar reflects
+  // fold completion (or failure) without a manual refresh.
+  useEffect(() => {
+    if (authStatus === "loading") return;
+
+    const params = new URLSearchParams();
+    const token = getToken();
+    if (token) params.set("token", token);
+    const anonId = getAnonId();
+    if (anonId) params.set("anon", anonId);
+    if (![...params.keys()].length) return;
+
+    const source = new EventSource(`/api/jobs/events?${params.toString()}`);
+
+    function handleJobUpdated() {
+      refreshJobs();
+    }
+
+    source.addEventListener("job.updated", handleJobUpdated);
+
+    return () => {
+      source.removeEventListener("job.updated", handleJobUpdated);
+      source.close();
     };
   }, [authStatus, user?.id]);
 
