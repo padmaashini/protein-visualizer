@@ -111,8 +111,10 @@ uv sync
 Create `api/instance/config.py` (gitignored) with your secrets:
 
 ```python
-SECRET_KEY = "generate-a-32+-byte-random-hex-string"
+JWT_SECRET = "*************************************"
+GOOGLE_CLIENT_SECRET = "your-google-client-secret"
 GOOGLE_CLIENT_ID = "your-client-id.apps.googleusercontent.com"
+NVIDIA_TOKEN = "your-nvidia-api-key"
 ```
 
 > Generate a key with: `uv run python -c "import secrets; print(secrets.token_hex(32))"`

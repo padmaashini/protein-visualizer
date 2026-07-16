@@ -1,0 +1,102 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  temporal:
+    image: temporalio/auto-setup:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB: postgresql
+      DB_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PWD: ${POSTGRES_PASSWORD}
+      POSTGRES_SEEDS: postgres
+      DB_NAME: temporal
+      BIND_ON_IP: 0.0.0.0
+    ports:
+      - "7233:7233"
+
+  temporal-web:
+    image: temporalio/ui:latest
+    restart: unless-stopped
+    depends_on:
+      temporal:
+        condition: service_started
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CORS_ORIGINS=*
+    ports:
+      - "127.0.0.1:8083:8080"
+
+  flask-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      temporal:
+        condition: service_started
+    environment:
+      SQLALCHEMY_DATABASE_URI: sqlite:////app/instance/jobs.db
+      JWT_SECRET: ${JWT_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      NVIDIA_TOKEN: ${NVIDIA_TOKEN}
+      TEMPORAL_ADDRESS: temporal:7233
+    ports:
+      - "5000:5000"
+    volumes:
+      - naturefold_data:/app/instance
+
+  worker:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.worker
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      temporal:
+        condition: service_started
+    environment:
+      SQLALCHEMY_DATABASE_URI: sqlite:////app/instance/jobs.db
+      JWT_SECRET: ${JWT_SECRET}
+      NVIDIA_TOKEN: ${NVIDIA_TOKEN}
+      TEMPORAL_ADDRESS: temporal:7233
+    volumes:
+      - naturefold_data:/app/instance
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - flask-api
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:
+  naturefold_data:

@@ -1,0 +1,25 @@
+api.naturefoldlabs.com {
+    reverse_proxy flask-api:5000
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+
+    encode zstd gzip
+
+    log {
+        output stdout
+        format console
+    }
+}
+
+# Optional: Temporal Web UI (uncomment after generating a hash; see caddy.md)
+# temporal-ui.naturefoldlabs.com {
+#     basicauth {
+#         admin JDJhJDE0JDh...your-hash-here
+#     }
+#     reverse_proxy temporal-web:8080
+# }

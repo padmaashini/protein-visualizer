@@ -8,7 +8,6 @@ from app.db import db
 def create_app(test_config: dict | None = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY=os.environ.get("JWT_SECRET", "dev"),
         JWT_SECRET=os.environ.get("JWT_SECRET", "dev"),
         NVIDIA_TOKEN=os.environ.get("NVIDIA_TOKEN"),
         SQLALCHEMY_DATABASE_URI=os.environ.get(
